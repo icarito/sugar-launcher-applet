@@ -17,6 +17,9 @@ from sugar3.graphics import xocolor
 
 from sugar3.datastore import datastore
 
+from dbus.mainloop.glib import DBusGMainLoop
+DBusGMainLoop(set_as_default=True)
+
 try:
     activities_path = os.environ['SUGAR_ACTIVITIES_PATH']
 except KeyError:
@@ -38,6 +41,9 @@ settings.set_property('gtk-font-name',
 DS_DBUS_SERVICE = 'org.laptop.sugar.DataStore'
 DS_DBUS_INTERFACE = 'org.laptop.sugar.DataStore'
 DS_DBUS_PATH = '/org/laptop/sugar/DataStore'
+
+from jarabe import apisocket
+apisocket.start()
 
 _datastore = None
 def _get_datastore():
