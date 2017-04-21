@@ -4,6 +4,10 @@ import dbus
 import gi
 gi.require_version('Gtk', '3.0')
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 from gi.repository import Gtk
 from random import randint
 
@@ -20,10 +24,15 @@ from sugar3.datastore import datastore
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
 
+from jarabe.model import shell
+shell.get_model()
+
 try:
     activities_path = os.environ['SUGAR_ACTIVITIES_PATH']
 except KeyError:
     activities_path = os.path.join(os.path.expanduser("~"), "Activities")
+os.environ['SUGAR_MIME_DEFAULTS'] = '/usr/share/sugar/data/mime.defaults'
+os.environ['SUGAR_ACTIVITIES_HIDDEN'] = '/usr/share/sugar/data/activities.hidden'
 
 sugar_theme = 'sugar-72'
 if 'SUGAR_SCALING' in os.environ:
