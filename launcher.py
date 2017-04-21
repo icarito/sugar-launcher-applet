@@ -121,19 +121,23 @@ class ActivityLauncher:
     def refresh_activity_list(self):
         self.menu = Gtk.Menu()
 
-        for dir_name in sorted(os.listdir(activities_path)):
-            bundles_installed = []
-            if dir_name.endswith('.activity'):
-                activity_dir = os.path.join(activities_path, dir_name)
-                bundle = ActivityBundle(activity_dir)
-                bundles_installed.append(bundle)
+        def process_dir(activity_path):
+            for dir_name in sorted(os.listdir(activity_path)):
+                bundles_installed = []
+                if dir_name.endswith('.activity'):
+                    bundle_dir = os.path.join(activity_path, dir_name)
+                    bundle = ActivityBundle(bundle_dir)
+                    bundles_installed.append(bundle)
 
-                item = MenuItem(file_name=bundle.get_icon(),
-                                xo_color=xocolor.XoColor())
-                item.set_label(bundle.get_name())
-                item.set_reserve_indicator(True)
-                item.set_submenu(self.make_submenu(bundle))
-                self.menu.append(item)
+                    item = MenuItem(file_name=bundle.get_icon(),
+                                    xo_color=xocolor.XoColor())
+                    item.set_label(bundle.get_name())
+                    item.set_reserve_indicator(True)
+                    item.set_submenu(self.make_submenu(bundle))
+                    self.menu.append(item)
+
+        process_dir('/usr/share/sugar/activities/')
+        process_dir(activities_path) # ~/Activities
 
         separator = Gtk.SeparatorMenuItem()
         self.menu.append(separator)
